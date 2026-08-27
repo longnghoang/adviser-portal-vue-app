@@ -76,3 +76,36 @@
     @apply bg-background text-foreground;
   }
 }
+
+.sidebar-gradient {
+  background: linear-gradient(175deg, #130620 0%, #1b0830 28%, #230b48 62%, #170930 100%);
+}
+
+.section-card {
+  border-radius: 1rem;
+  border-width: 1px;
+  border-color: hsl(var(--border) / 0.6);
+  background-color: hsl(var(--card));
+  box-shadow:
+    0 1px 6px 0 rgba(0, 0, 0, 0.04),
+    0 1px 3px -1px rgba(0, 0, 0, 0.03);
+}
+
+.th-cell {
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: hsl(var(--muted-foreground) / 0.6);
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
