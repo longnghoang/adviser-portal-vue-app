@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
 import { LogOut } from 'lucide-vue-next';
-import { usePersona } from '@/composables/usePersona';
+import { useAppStore } from '@/stores';
 
 const props = withDefaults(
   defineProps<{
@@ -11,7 +12,9 @@ const props = withDefaults(
   }
 );
 
-const { currentPersona, switchPersona } = usePersona();
+const appStore = useAppStore();
+const { currentPersona } = storeToRefs(appStore);
+const { switchPersona } = appStore;
 </script>
 
 <template>

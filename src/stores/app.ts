@@ -1,7 +1,8 @@
 import { ref } from 'vue';
+import { defineStore } from 'pinia';
 import type { AdviserPersona } from '@/types/navigation';
 
-const DEFAULT_PERSONAS: AdviserPersona[] = [
+export const DEFAULT_PERSONAS: AdviserPersona[] = [
   {
     id: 'alex-sterling',
     name: 'Alex Sterling',
@@ -22,9 +23,18 @@ const DEFAULT_PERSONAS: AdviserPersona[] = [
   },
 ];
 
-const currentPersona = ref<AdviserPersona>(DEFAULT_PERSONAS[0]);
+export const useAppStore = defineStore('app', () => {
+  // Sidebar state
+  const isSidebarCollapsed = ref(false);
 
-export function usePersona() {
+  function toggleSidebar() {
+    isSidebarCollapsed.value = !isSidebarCollapsed.value;
+  }
+
+  // Persona state
+  const currentPersona = ref<AdviserPersona>(DEFAULT_PERSONAS[0]);
+  const availablePersonas = ref<AdviserPersona[]>(DEFAULT_PERSONAS);
+
   function switchPersona() {
     const currentIndex = DEFAULT_PERSONAS.findIndex((p) => p.id === currentPersona.value.id);
     const nextIndex = (currentIndex + 1) % DEFAULT_PERSONAS.length;
@@ -39,9 +49,13 @@ export function usePersona() {
   }
 
   return {
+    // Sidebar
+    isSidebarCollapsed,
+    toggleSidebar,
+    // Persona
     currentPersona,
-    availablePersonas: DEFAULT_PERSONAS,
+    availablePersonas,
     switchPersona,
     setPersona,
   };
-}
+});

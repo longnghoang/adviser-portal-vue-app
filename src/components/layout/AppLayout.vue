@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
 import { RouterView } from 'vue-router';
-import { useSidebar } from '@/composables/useSidebar';
+import { useAppStore } from '@/stores';
 import AppSidebar from './AppSidebar.vue';
 
-const { isCollapsed } = useSidebar();
+const appStore = useAppStore();
+const { isSidebarCollapsed } = storeToRefs(appStore);
 </script>
 
 <template>
@@ -15,7 +17,7 @@ const { isCollapsed } = useSidebar();
     <div
       :class="[
         'flex min-h-screen min-w-0 flex-col overflow-y-auto transition-all duration-300 ease-in-out',
-        isCollapsed ? 'pl-[72px]' : 'pl-[256px]',
+        isSidebarCollapsed ? 'pl-[72px]' : 'pl-[256px]',
       ]"
     >
       <main class="flex-1">

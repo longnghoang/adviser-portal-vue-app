@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Component } from 'vue';
 import { useRoute, RouterLink } from 'vue-router';
+import { storeToRefs } from 'pinia';
 import {
   LayoutDashboard,
   Users,
@@ -11,7 +12,7 @@ import {
   ChevronRight,
   PanelLeftClose,
 } from 'lucide-vue-next';
-import { useSidebar } from '@/composables/useSidebar';
+import { useAppStore } from '@/stores';
 import PersonaSwitcher from './PersonaSwitcher.vue';
 
 interface NavItem {
@@ -22,7 +23,9 @@ interface NavItem {
 }
 
 const route = useRoute();
-const { isCollapsed, toggleCollapsed } = useSidebar();
+const appStore = useAppStore();
+const { isSidebarCollapsed } = storeToRefs(appStore);
+const { toggleSidebar } = appStore;
 
 const primaryNavItems: NavItem[] = [
   { id: 'dashboard', to: '/', icon: LayoutDashboard, label: 'Dashboard' },
@@ -55,7 +58,7 @@ const isItemActive = (path: string): boolean => {
   <aside
     :class="[
       'sidebar-gradient fixed left-0 top-0 z-40 flex h-screen select-none flex-col transition-all duration-300 ease-in-out',
-      isCollapsed ? 'w-[72px]' : 'w-[256px]',
+      isSidebarCollapsed ? 'w-[72px]' : 'w-[256px]',
     ]"
     style="border-right: 1px solid rgba(255, 255, 255, 0.055)"
   >
@@ -63,16 +66,16 @@ const isItemActive = (path: string): boolean => {
     <div
       :class="[
         'flex h-[66px] shrink-0 items-center',
-        isCollapsed ? 'justify-center px-3' : 'justify-between px-4',
+        isSidebarCollapsed ? 'justify-center px-3' : 'justify-between px-4',
       ]"
       style="border-bottom: 1px solid rgba(255, 255, 255, 0.055)"
     >
       <!-- Expanded brand logo (click to collapse sidebar) -->
       <div
-        v-if="!isCollapsed"
+        v-if="!isSidebarCollapsed"
         class="group flex cursor-pointer items-center gap-3 overflow-hidden transition-opacity hover:opacity-90"
         title="Collapse Sidebar"
-        @click="toggleCollapsed"
+        @click="toggleSidebar"
       >
         <div
           class="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] shadow-md transition-transform group-hover:scale-105"
@@ -108,18 +111,18 @@ const isItemActive = (path: string): boolean => {
             inset 0 1px 0 rgba(255, 255, 255, 0.18);
         "
         title="Expand Sidebar"
-        @click="toggleCollapsed"
+        @click="toggleSidebar"
       >
         <span class="text-[11px] font-black tracking-tight text-white">GG</span>
       </div>
 
       <!-- Collapse toggle button -->
       <button
-        v-if="!isCollapsed"
+        v-if="!isSidebarCollapsed"
         type="button"
         class="flex h-7 w-7 items-center justify-center rounded-lg text-[#C4B0D8]/40 transition-colors hover:bg-white/10 hover:text-white"
         title="Collapse Sidebar"
-        @click="toggleCollapsed"
+        @click="toggleSidebar"
       >
         <PanelLeftClose class="h-4 w-4" />
       </button>
@@ -136,7 +139,7 @@ const isItemActive = (path: string): boolean => {
           :class="[
             'group relative flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition-all duration-200',
             isItemActive(item.to) ? 'text-white' : 'text-[#C4B0D8]/55 hover:text-white/90',
-            isCollapsed && 'justify-center px-0',
+            isSidebarCollapsed && 'justify-center px-0',
           ]"
         >
           <!-- Active background -->
@@ -190,7 +193,7 @@ const isItemActive = (path: string): boolean => {
 
           <!-- Label -->
           <span
-            v-if="!isCollapsed"
+            v-if="!isSidebarCollapsed"
             class="relative z-10 flex-1 truncate text-[13px] font-[540] tracking-[-0.01em]"
           >
             {{ item.label }}
@@ -198,7 +201,7 @@ const isItemActive = (path: string): boolean => {
 
           <!-- Arrow on hover -->
           <ChevronRight
-            v-if="!isCollapsed && !isItemActive(item.to)"
+            v-if="!isSidebarCollapsed && !isItemActive(item.to)"
             class="relative z-10 h-3 w-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-35"
           />
         </RouterLink>
@@ -207,7 +210,7 @@ const isItemActive = (path: string): boolean => {
       <!-- Insights Section -->
       <div class="space-y-1 pt-4">
         <p
-          v-if="!isCollapsed"
+          v-if="!isSidebarCollapsed"
           class="mb-2 px-3 text-[9px] font-bold uppercase tracking-[0.18em] text-[#C4B0D8]/30"
         >
           Tools
@@ -219,7 +222,7 @@ const isItemActive = (path: string): boolean => {
           :class="[
             'group relative flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition-all duration-200',
             isItemActive(item.to) ? 'text-white' : 'text-[#C4B0D8]/55 hover:text-white/90',
-            isCollapsed && 'justify-center px-0',
+            isSidebarCollapsed && 'justify-center px-0',
           ]"
         >
           <!-- Active background -->
@@ -273,7 +276,7 @@ const isItemActive = (path: string): boolean => {
 
           <!-- Label -->
           <span
-            v-if="!isCollapsed"
+            v-if="!isSidebarCollapsed"
             class="relative z-10 flex-1 truncate text-[13px] font-[540] tracking-[-0.01em]"
           >
             {{ item.label }}
@@ -281,13 +284,13 @@ const isItemActive = (path: string): boolean => {
 
           <!-- Arrow on hover -->
           <ChevronRight
-            v-if="!isCollapsed && !isItemActive(item.to)"
+            v-if="!isSidebarCollapsed && !isItemActive(item.to)"
             class="relative z-10 h-3 w-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-35"
           />
         </RouterLink>
       </div>
     </div>
     <!-- User profile & Persona switcher -->
-    <PersonaSwitcher :is-collapsed="isCollapsed" />
+    <PersonaSwitcher :is-collapsed="isSidebarCollapsed" />
   </aside>
 </template>

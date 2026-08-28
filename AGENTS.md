@@ -10,6 +10,7 @@
 | :----------------------- | :------------------------------------------------------------------------------ | :-------- | :----------------------------------------------------------- |
 | **Framework**            | [Vue 3](https://vuejs.org/)                                                     | `^3.5.13` | Composition API with `<script setup lang="ts">`              |
 | **Language**             | [TypeScript](https://www.typescriptlang.org/)                                   | `~5.8.3`  | Strict mode enabled (`@vue/tsconfig`)                        |
+| **State Management**     | [Pinia](https://pinia.vuejs.org/)                                               | `^4.0.3`  | Intuitive, type-safe store for Vue 3                         |
 | **Build Tool & Bundler** | [Vite](https://vite.dev/)                                                       | `^6.3.5`  | Fast HMR & build (`@vitejs/plugin-vue`)                      |
 | **Routing**              | [Vue Router](https://router.vuejs.org/)                                         | `^4.6.4`  | SPA routing with lazy-loaded route views                     |
 | **UI Components**        | [shadcn-vue](https://shadcn-vue.com/) / [Radix Vue](https://www.radix-vue.com/) | `^1.9.17` | Accessible, unstyled primitives + CVA variants               |
@@ -33,8 +34,11 @@ adviser-portal-vue-app/
 │   ├── assets/              # Static media & svg files
 │   ├── components/          # App-level reusable components
 │   │   └── ui/              # shadcn-vue base components (button, card, etc.)
+│   ├── composables/         # Reusable composables & store adapters
 │   ├── lib/                 # Core utilities (cn class merge helper, etc.)
 │   ├── router/              # Vue Router instance & route definitions
+│   ├── stores/              # Pinia stores for global application state
+│   ├── types/               # TypeScript interfaces and types
 │   ├── views/               # Page-level view components (e.g. HomeView.vue)
 │   ├── App.vue              # Root application component & layout shell
 │   ├── main.ts              # Application bootstrap & plugin registration
@@ -56,9 +60,10 @@ Configured in `vite.config.ts`, `tsconfig.app.json`, and `components.json`:
 - `@/` &rarr; `<project-root>/src/`
 - `@/components` &rarr; `<project-root>/src/components/`
 - `@/components/ui` &rarr; `<project-root>/src/components/ui/`
+- `@/composables` &rarr; `<project-root>/src/composables/`
+- `@/stores` &rarr; `<project-root>/src/stores/`
 - `@/lib` &rarr; `<project-root>/src/lib/`
 - `@/lib/utils` &rarr; `<project-root>/src/lib/utils.ts`
-- `@/composables` &rarr; `<project-root>/src/composables/` (when added)
 
 ---
 
@@ -121,9 +126,11 @@ yarn format:check
    </script>
    ```
 
-3. **State & Reactivity**:
-   - Use `ref()` for primitive values and direct object bindings.
-   - Use `computed()` for derived state.
+3. **State Management with Pinia & Reactivity**:
+   - Use Pinia (`defineStore`) for global and cross-component application state (e.g., personas, sidebar collapse state, auth).
+   - Prefer Setup Stores syntax (`defineStore('id', () => { ... })`) for consistency with Composition API.
+   - Use `storeToRefs()` when destructuring reactive state or getters from Pinia stores in components/composables to maintain reactivity.
+   - Use `ref()` for local primitive values and `computed()` for derived state.
    - Avoid mutating props directly; emit update events or use `defineModel()`.
 
 4. **Component Design with shadcn-vue & Radix Vue**:
