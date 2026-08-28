@@ -8,12 +8,11 @@ import {
   ArrowLeftRight,
   FileText,
   Library,
-  LogOut,
   ChevronRight,
   PanelLeftClose,
 } from 'lucide-vue-next';
-import { usePersona } from '@/composables/usePersona';
 import { useSidebar } from '@/composables/useSidebar';
+import PersonaSwitcher from './PersonaSwitcher.vue';
 
 interface NavItem {
   id: string;
@@ -23,7 +22,6 @@ interface NavItem {
 }
 
 const route = useRoute();
-const { currentPersona, switchPersona } = usePersona();
 const { isCollapsed, toggleCollapsed } = useSidebar();
 
 const primaryNavItems: NavItem[] = [
@@ -38,12 +36,19 @@ const secondaryNavItems: NavItem[] = [
   { id: 'resources', to: '/resources', icon: Library, label: 'Resources' },
 ];
 
-function isItemActive(path: string): boolean {
+// function isItemActive(path: string): boolean {
+//   if (path === '/') {
+//     return route.path === '/';
+//   }
+//   return route.path.startsWith(path);
+// }
+
+const isItemActive = (path: string): boolean => {
   if (path === '/') {
     return route.path === '/';
   }
   return route.path.startsWith(path);
-}
+};
 </script>
 
 <template>
@@ -122,14 +127,8 @@ function isItemActive(path: string): boolean {
 
     <!-- Main navigation -->
     <div class="scrollbar-none flex-1 space-y-6 overflow-y-auto px-3 py-4">
-      <!-- Menu Section -->
+      <!-- First Section -->
       <div class="space-y-1">
-        <p
-          v-if="!isCollapsed"
-          class="mb-2 px-3 text-[9px] font-bold uppercase tracking-[0.18em] text-[#C4B0D8]/30"
-        >
-          Menu
-        </p>
         <RouterLink
           v-for="item in primaryNavItems"
           :key="item.id"
@@ -206,12 +205,12 @@ function isItemActive(path: string): boolean {
       </div>
 
       <!-- Insights Section -->
-      <div class="space-y-1 pt-4" style="border-top: 1px solid rgba(255, 255, 255, 0.055)">
+      <div class="space-y-1 pt-4">
         <p
           v-if="!isCollapsed"
           class="mb-2 px-3 text-[9px] font-bold uppercase tracking-[0.18em] text-[#C4B0D8]/30"
         >
-          Insights
+          Tools
         </p>
         <RouterLink
           v-for="item in secondaryNavItems"
@@ -288,73 +287,7 @@ function isItemActive(path: string): boolean {
         </RouterLink>
       </div>
     </div>
-
     <!-- User profile & Persona switcher -->
-    <div class="shrink-0 p-3" style="border-top: 1px solid rgba(255, 255, 255, 0.055)">
-      <div
-        :class="[
-          'group flex cursor-pointer items-center gap-3 rounded-xl p-2.5 transition-all duration-200 hover:bg-white/10',
-          isCollapsed ? 'justify-center p-2' : 'border border-white/[0.06] bg-white/[0.04]',
-        ]"
-        :title="
-          isCollapsed
-            ? `${currentPersona.name} (${currentPersona.title}) - Click to switch`
-            : undefined
-        "
-        @click="switchPersona"
-      >
-        <!-- Avatar with status dot -->
-        <div class="relative shrink-0">
-          <img
-            v-if="currentPersona.avatarUrl"
-            :src="currentPersona.avatarUrl"
-            :alt="currentPersona.name"
-            class="h-8 w-8 rounded-lg object-cover"
-            :style="{
-              border:
-                currentPersona.role === 'adviser' ? '1.5px solid #C43CB4' : '1.5px solid #6366F1',
-            }"
-          />
-          <div
-            v-else
-            class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 text-xs font-bold text-white shadow-inner"
-            :style="{
-              border:
-                currentPersona.role === 'adviser' ? '1.5px solid #C43CB4' : '1.5px solid #6366F1',
-            }"
-          >
-            {{ currentPersona.initials || currentPersona.name.charAt(0) }}
-          </div>
-
-          <span
-            class="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border border-[#130620]"
-            :style="{
-              background: currentPersona.role === 'adviser' ? '#C43CB4' : '#6366F1',
-            }"
-          />
-        </div>
-
-        <!-- User info when expanded -->
-        <div v-if="!isCollapsed" class="min-w-0 flex-1">
-          <p class="truncate text-[12px] font-bold leading-tight text-white">
-            {{ currentPersona.name }}
-          </p>
-          <p class="mt-0.5 truncate text-[10px] text-[#C4B0D8]/50">
-            {{ currentPersona.title }}
-          </p>
-        </div>
-
-        <!-- Switch Persona button when expanded -->
-        <button
-          v-if="!isCollapsed"
-          type="button"
-          class="rounded-md p-1 text-[#C4B0D8]/40 transition-colors hover:bg-white/10 hover:text-white"
-          title="Switch Persona"
-          @click.stop="switchPersona"
-        >
-          <LogOut class="h-3.5 w-3.5" />
-        </button>
-      </div>
-    </div>
+    <PersonaSwitcher :is-collapsed="isCollapsed" />
   </aside>
 </template>

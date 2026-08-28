@@ -9,9 +9,8 @@ The sidebar serves as the primary navigation anchor, providing:
 1. **Brand Header**: Collapsible toggle on GG logo click, "Goals Getter - Adviser Portal" branding, and `PanelLeftClose` toggle button.
 2. **Collapsible State**: Smooth transition between expanded (`w-[256px]`) and compact (`w-[72px]`) modes.
 3. **Grouped Navigation Sections**:
-   - **`Menu`**: Dashboard, Clients, Investments, Switches & Redemptions.
-   - **Separator**: Top border divider between Menu and Insights sections.
-   - **`Insights`**: Reports (icon: `FileText`), Resources (icon: `Library`).
+   - **``**: Dashboard, Clients, Investments, Switches & Redemptions.
+   - **`Tools`**: Reports (icon: `FileText`), Resources (icon: `Library`).
 4. **Interactive States**:
    - **Active**: Translucent gradient background, glowing left indicator bar, highlighted icon container (`bg-white/10`, `text-[#e55cda]`), and white text.
    - **Hover**: Subtle hover highlight, text transition to `white/90`, and hover chevron indicator.
