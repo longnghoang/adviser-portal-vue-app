@@ -1,26 +1,10 @@
 <script setup lang="ts">
-import type { Component } from 'vue';
 import { useRoute, RouterLink } from 'vue-router';
 import { storeToRefs } from 'pinia';
-import {
-  LayoutDashboard,
-  Users,
-  TrendingUp,
-  ArrowLeftRight,
-  FileText,
-  Library,
-  ChevronRight,
-  PanelLeftClose,
-} from 'lucide-vue-next';
 import { useAppStore } from '@/stores';
 import PersonaSwitcher from './PersonaSwitcher.vue';
-
-interface NavItem {
-  id: string;
-  to: string;
-  icon: Component;
-  label: string;
-}
+import type { NavItem } from '@/types/navigation.ts';
+import MaterialSymbol from '@/components/MaterialSymbol.vue';
 
 const route = useRoute();
 const appStore = useAppStore();
@@ -28,23 +12,16 @@ const { isSidebarCollapsed } = storeToRefs(appStore);
 const { toggleSidebar } = appStore;
 
 const primaryNavItems: NavItem[] = [
-  { id: 'dashboard', to: '/', icon: LayoutDashboard, label: 'Dashboard' },
-  { id: 'clients', to: '/clients', icon: Users, label: 'Clients' },
-  { id: 'investments', to: '/investments', icon: TrendingUp, label: 'Investments' },
-  { id: 'transactions', to: '/switches', icon: ArrowLeftRight, label: 'Switches & Redemptions' },
+  { id: 'dashboard', to: '/', icon: 'dashboard', label: 'Dashboard' },
+  { id: 'clients', to: '/clients', icon: 'group', label: 'Clients' },
+  { id: 'investments', to: '/investments', icon: 'trending_up', label: 'Investments' },
+  { id: 'transactions', to: '/switches', icon: 'sync', label: 'Switches & Redemptions' },
 ];
 
 const secondaryNavItems: NavItem[] = [
-  { id: 'reports', to: '/reports', icon: FileText, label: 'Reports' },
-  { id: 'resources', to: '/resources', icon: Library, label: 'Resources' },
+  { id: 'reports', to: '/reports', icon: 'assignment', label: 'Reports' },
+  { id: 'resources', to: '/resources', icon: 'menu_book', label: 'Resources' },
 ];
-
-// function isItemActive(path: string): boolean {
-//   if (path === '/') {
-//     return route.path === '/';
-//   }
-//   return route.path.startsWith(path);
-// }
 
 const isItemActive = (path: string): boolean => {
   if (path === '/') {
@@ -57,10 +34,9 @@ const isItemActive = (path: string): boolean => {
 <template>
   <aside
     :class="[
-      'sidebar-gradient fixed left-0 top-0 z-40 flex h-screen select-none flex-col transition-all duration-300 ease-in-out',
+      'sidebar fixed left-0 top-0 z-40 flex h-screen select-none flex-col transition-all duration-300 ease-in-out',
       isSidebarCollapsed ? 'w-[72px]' : 'w-[256px]',
     ]"
-    style="border-right: 1px solid rgba(255, 255, 255, 0.055)"
   >
     <!-- Logo area -->
     <div
@@ -124,7 +100,7 @@ const isItemActive = (path: string): boolean => {
         title="Collapse Sidebar"
         @click="toggleSidebar"
       >
-        <PanelLeftClose class="h-4 w-4" />
+        <MaterialSymbol name="left_panel_close" :size="20" />
       </button>
     </div>
 
@@ -180,14 +156,14 @@ const isItemActive = (path: string): boolean => {
               isItemActive(item.to) ? 'bg-white/10' : 'group-hover:bg-white/5',
             ]"
           >
-            <component
-              :is="item.icon"
-              :class="[
-                'h-[15px] w-[15px] shrink-0 transition-colors',
+            <MaterialSymbol
+              :name="item.icon"
+              :size="20"
+              :class="
                 isItemActive(item.to)
                   ? 'text-[#e55cda]'
-                  : 'text-[#C4B0D8]/45 group-hover:text-[#C4B0D8]/75',
-              ]"
+                  : 'text-[#C4B0D8]/45 group-hover:text-[#C4B0D8]/75'
+              "
             />
           </div>
 
@@ -263,14 +239,15 @@ const isItemActive = (path: string): boolean => {
               isItemActive(item.to) ? 'bg-white/10' : 'group-hover:bg-white/5',
             ]"
           >
-            <component
-              :is="item.icon"
-              :class="[
-                'h-[15px] w-[15px] shrink-0 transition-colors',
+            <MaterialSymbol
+              :name="item.icon"
+              :size="20"
+              class="h-[15px] w-[15px] shrink-0 transition-colors"
+              :class="
                 isItemActive(item.to)
                   ? 'text-[#e55cda]'
-                  : 'text-[#C4B0D8]/45 group-hover:text-[#C4B0D8]/75',
-              ]"
+                  : 'text-[#C4B0D8]/45 group-hover:text-[#C4B0D8]/75'
+              "
             />
           </div>
 
@@ -283,8 +260,15 @@ const isItemActive = (path: string): boolean => {
           </span>
 
           <!-- Arrow on hover -->
-          <ChevronRight
+          <!-- <ChevronRight
             v-if="!isSidebarCollapsed && !isItemActive(item.to)"
+            class="relative z-10 h-3 w-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-35"
+          /> -->
+
+          <MaterialSymbol
+            v-if="!isSidebarCollapsed && !isItemActive(item.to)"
+            name="chevron_right"
+            :size="20"
             class="relative z-10 h-3 w-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-35"
           />
         </RouterLink>

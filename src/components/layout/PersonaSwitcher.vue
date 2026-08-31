@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { LogOut } from 'lucide-vue-next';
 import { useAppStore } from '@/stores';
+import MaterialSymbol from '@/components/MaterialSymbol.vue';
 
 const props = withDefaults(
   defineProps<{
@@ -9,7 +9,7 @@ const props = withDefaults(
   }>(),
   {
     isCollapsed: false,
-  }
+  },
 );
 
 const appStore = useAppStore();
@@ -58,7 +58,7 @@ const { switchPersona } = appStore;
         title="Switch Persona"
         @click.stop="switchPersona"
       >
-        <LogOut class="h-3.5 w-3.5" />
+        <MaterialSymbol name="logout" class="h-3.5 w-3.5" :size="24" />
       </button>
     </div>
   </div>
