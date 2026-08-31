@@ -113,8 +113,7 @@ const isItemActive = (path: string): boolean => {
           :key="item.id"
           :to="item.to"
           :class="[
-            'group relative flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition-all duration-200',
-            isItemActive(item.to) ? 'text-white' : 'text-[#C4B0D8]/55 hover:text-white/90',
+            'group relative flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition-all duration-200 text-white',
             isSidebarCollapsed && 'justify-center px-0',
           ]"
         >
@@ -153,17 +152,12 @@ const isItemActive = (path: string): boolean => {
           <div
             :class="[
               'relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl transition-all',
-              isItemActive(item.to) ? 'bg-white/10' : 'group-hover:bg-white/5',
             ]"
           >
             <MaterialSymbol
               :name="item.icon"
               :size="20"
-              :class="
-                isItemActive(item.to)
-                  ? 'text-[#e55cda]'
-                  : 'text-[#C4B0D8]/45 group-hover:text-[#C4B0D8]/75'
-              "
+              :class="isItemActive(item.to) ? 'text-[#e55cda]' : 'text-white'"
             />
           </div>
 
@@ -176,9 +170,11 @@ const isItemActive = (path: string): boolean => {
           </span>
 
           <!-- Arrow on hover -->
-          <ChevronRight
+          <MaterialSymbol
             v-if="!isSidebarCollapsed && !isItemActive(item.to)"
-            class="relative z-10 h-3 w-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-35"
+            name="chevron_right"
+            :size="20"
+            class="relative z-10 opacity-0 transition-opacity group-hover:opacity-35"
           />
         </RouterLink>
       </div>
@@ -196,8 +192,7 @@ const isItemActive = (path: string): boolean => {
           :key="item.id"
           :to="item.to"
           :class="[
-            'group relative flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition-all duration-200',
-            isItemActive(item.to) ? 'text-white' : 'text-[#C4B0D8]/55 hover:text-white/90',
+            'group relative flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition-all duration-200 text-white',
             isSidebarCollapsed && 'justify-center px-0',
           ]"
         >
@@ -236,18 +231,12 @@ const isItemActive = (path: string): boolean => {
           <div
             :class="[
               'relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl transition-all',
-              isItemActive(item.to) ? 'bg-white/10' : 'group-hover:bg-white/5',
             ]"
           >
             <MaterialSymbol
               :name="item.icon"
               :size="20"
-              class="h-[15px] w-[15px] shrink-0 transition-colors"
-              :class="
-                isItemActive(item.to)
-                  ? 'text-[#e55cda]'
-                  : 'text-[#C4B0D8]/45 group-hover:text-[#C4B0D8]/75'
-              "
+              :class="isItemActive(item.to) ? 'text-[#e55cda]' : 'text-white'"
             />
           </div>
 
@@ -260,16 +249,11 @@ const isItemActive = (path: string): boolean => {
           </span>
 
           <!-- Arrow on hover -->
-          <!-- <ChevronRight
-            v-if="!isSidebarCollapsed && !isItemActive(item.to)"
-            class="relative z-10 h-3 w-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-35"
-          /> -->
-
           <MaterialSymbol
             v-if="!isSidebarCollapsed && !isItemActive(item.to)"
             name="chevron_right"
             :size="20"
-            class="relative z-10 h-3 w-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-35"
+            class="relative z-10 opacity-0 transition-opacity group-hover:opacity-35"
           />
         </RouterLink>
       </div>
